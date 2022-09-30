@@ -1,0 +1,32 @@
+{
+  "name": "unit-of-work-multiple-instances",
+  "version": "0.0.1",
+  "description": "Unit of work with creating new UnitOfWork and Repository instances for each transaction",
+  "repository": {
+    "type": "GitHub",
+    "url": "https://github.com/khodorkovskyalexey/unit-of-work-multiple-instances"
+  },
+  "author": {
+    "name": "khodorkovskyalexey",
+    "url": "https://github.com/khodorkovskyalexey"
+  },
+  "private": false,
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "migration:make": "yarn knex migrate:make -- -x ts",
+    "migration:up": "yarn knex migrate:up",
+    "migration:latest": "yarn knex migrate:latest",
+    "migration:rollback": "yarn knex migrate:rollback"
+  },
+  "dependencies": {
+    "knex": "^2.1.0",
+    "objection": "^3.0.1",
+    "pg": "^8.8.0",
+    "ts-node": "^10.9.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.23",
+    "typescript": "^4.7.4"
+  }
+}
