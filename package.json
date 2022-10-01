@@ -20,10 +20,12 @@
     "migration:rollback": "yarn knex migrate:rollback"
   },
   "dependencies": {
+    "@nestjs/typeorm": "7.1.5",
     "knex": "^2.1.0",
     "objection": "^3.0.1",
     "pg": "^8.8.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typeorm": "0.2.32"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",

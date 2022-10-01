@@ -1,10 +1,9 @@
-import { Transaction } from "objection";
-import { ICatRepository, IDogRepository } from "../repositories/interfaces";
-import { IUnitOfWork } from '../../shared/interfaces';
+import { ITransaction, ITransactionOrchestrator, IUnitOfWork } from '../../shared/interfaces';
+import { ICatRepository, IDogRepository } from "../interfaces";
 
-export type IUnitOfWorkRepositories = {
-  CatRepositoryConstructor: (trx: Transaction) => ICatRepository,
-  DogRepositoryConstructor: (trx: Transaction) => IDogRepository,
+export type IUnitOfWorkRepositories<T extends ITransaction = any> = {
+  CatRepositoryConstructor: (trx: T) => ICatRepository,
+  DogRepositoryConstructor: (trx: T) => IDogRepository,
 };
 
 export class UnitOfWork implements IUnitOfWork {
@@ -13,13 +12,13 @@ export class UnitOfWork implements IUnitOfWork {
     dogRepository?: IDogRepository
   };
 
-  constructor(private readonly trx: Transaction, private readonly constructors: IUnitOfWorkRepositories) {
+  constructor(private readonly orchestrator: ITransactionOrchestrator, private readonly constructors: IUnitOfWorkRepositories) {
     this.repositories = {};
   }
 
   get catRepository() {
     if (!this.repositories.catRepository) {
-      this.repositories.catRepository = this.constructors.CatRepositoryConstructor(this.trx);
+      this.repositories.catRepository = this.constructors.CatRepositoryConstructor(this.orchestrator.trx);
     }
 
     return this.repositories.catRepository;
@@ -27,13 +26,13 @@ export class UnitOfWork implements IUnitOfWork {
 
   get dogRepository() {
     if (!this.repositories.dogRepository) {
-      this.repositories.dogRepository = this.constructors.DogRepositoryConstructor(this.trx);
+      this.repositories.dogRepository = this.constructors.DogRepositoryConstructor(this.orchestrator.trx);
     }
 
     return this.repositories.dogRepository;
   }
 
-  async execute() {
+  async execute(): Promise<void> {
     try {
       await this.commit();
     } catch (e) {
@@ -43,11 +42,10 @@ export class UnitOfWork implements IUnitOfWork {
   }
 
   async commit() {
-    await this.trx.commit();
-    await this.trx.executionPromise;
+    await this.orchestrator.commit();
   }
 
   async rollback() {
-    await this.trx.rollback();
+    await this.orchestrator.rollback();
   }
 }

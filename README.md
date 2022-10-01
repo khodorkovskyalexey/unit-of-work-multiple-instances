@@ -1,14 +1,25 @@
 # Unit of work implementation for node js
 
-Using `Objection` + `knex` and `postgres`<br>
+Using `Objection` + `knex`, `TypeORM` and `postgres`<br>
 
 For load dependencies use:
+
+For Objection.js:
 ```
 yarn add knex objection pg
 ```
 or
 ```
 npm install knex objection pg
+```
+
+For TypeORM:
+```
+yarn add @nestjs/typeorm typeorm pg
+```
+or
+```
+npm install @nestjs/typeorm typeorm pg
 ```
 
 ---
