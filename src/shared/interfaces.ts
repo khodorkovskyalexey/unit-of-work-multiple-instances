@@ -1,5 +1,5 @@
 import { Transaction } from "objection";
-import { QueryRunner } from 'typeorm';
+import { QueryRunner } from "typeorm";
 
 export interface IUnitOfWork {
   execute(): Promise<void>;
@@ -10,8 +10,8 @@ export interface IUnitOfWork {
 export interface IBaseRepository<Entity extends IBaseEntity> {
   printTrx(): void;
   find(): Promise<IBaseEntity[]>;
-  save(cat: Omit<Entity, 'id'>): Promise<IBaseEntity>;
-};
+  save(entity: Omit<Entity, "id">): Promise<IBaseEntity>;
+}
 
 export interface IBaseEntity {
   id: number;
